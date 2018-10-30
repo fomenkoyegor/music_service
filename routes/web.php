@@ -28,3 +28,4 @@ Route::any('{all}', function () {
     return View::make('index');
 })
     ->where(['all' => '.*']);
+

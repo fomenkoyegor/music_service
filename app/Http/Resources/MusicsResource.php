@@ -19,7 +19,7 @@ class MusicsResource extends JsonResource
         $isFav = false;
 
         if (auth()->user()) {
-            $fav = \App\Favorite::where('music_id', $this->id)->first();
+            $fav = \App\Favorite::where('music_id', $this->id)->where('user_id', auth()->user()->id)->first();
             if($fav && $fav->user_id===auth()->user()->id){
                 $isFav=true;
             }

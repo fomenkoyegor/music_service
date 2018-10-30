@@ -18,7 +18,9 @@ class AuthController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['login','register','handleProviderCallback','redirectToProvider']]);
+        $this->middleware('auth:api', ['except' =>
+            ['login','register','handleProviderCallback','redirectToProvider','loginWithoutPassword','registerWithoutPassword']
+        ]);
     }
 
     public function register(Request $request)
@@ -150,5 +152,23 @@ class AuthController extends Controller
             'data'=>"rererer"
         ]);
 
+    }
+
+    public function loginWithoutPassword(Request $request) {
+        $user = User::where('email', '=', request(['email']))->firstOrFail();
+        $token = auth()->login($user);
+        return $this->respondWithToken($token);
+    }
+    public function registerWithoutPassword(Request $request) {
+//        $credentials = $request->only('email', 'password');
+        $name = $request->email;
+        $email = $request->email;
+        $password = '123456';
+        $user = new User();
+        $user->name = $name;
+        $user->email = $name;
+        $user->password = Hash::make($password);
+        $user->save();
+        return $this->loginWithoutPassword($request);
     }
 }

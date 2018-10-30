@@ -31,6 +31,12 @@ Route::group([
     Route::post('refresh', 'AuthController@refresh');
     Route::post('me', 'AuthController@me');
 
+
+    Route::post('loginWithoutPassword', 'AuthController@loginWithoutPassword');
+    Route::post('registerWithoutPassword', 'AuthController@registerWithoutPassword');
+
+
+
 });
 
 
@@ -77,6 +83,12 @@ Route::get('dowload/{id}', function (Request $request, $id) {
     $path = $music->music_server_path;
 
     return response()->download(public_path().$path);
+});
+
+
+Route::get('social',function (){
+    $user = \App\User::first();
+    return redirect('http://localhost:4200/social?email='.$user->email.'&password='.$user->password);
 });
 
 
